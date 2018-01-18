@@ -10,7 +10,7 @@ First, you need the following command line utilities:
 
 You can use your package manager to install mediainfo. handbrakecli typically is not available directly from most distros, but i think you can figure out how to get it. 
 
-Next, you need to edit the script in the section marked SOME "CONSTANTS FOR USER EDITING"
+Next, you need to download, and then edit the script in the section marked "SOME CONSTANTS FOR USER EDITING"
 
 To use this script, put it somewhere with permissions so that mythtvbackend can read/execute it. Then, in the backend configuration, add the following as a user job:
 
@@ -20,7 +20,7 @@ The "General" section is where mythtv 0.28 backend puts user job definition, so 
  
 Then, when you schedule a recording in the frontend, do not bother to transcode or mark commercials, but instead choose to invoke user job #1 on the file(assuming you defined this job as user job 1). Some frontend user interfaces may not have these options, so it may be best to use the built in mythtv-frontend application. You may also consider changing the skin of the frontend ui, as the default one hides a bunch of the full explanations for what recording options there are. 
 
-## Notes on operation
+## Notes on Operation
 
 This script simply cuts commercials and transcodes the mpeg transport stream to mp4, for HD and SD content. It does NOT replace the old transport stream file.
 
@@ -30,7 +30,13 @@ This script is currently configured to run on an ubuntu/debian like distro. you 
 
 This transcoding is SLOOOOWW on HD content on my terrible dual-core AMD machine. 
 
-this script can send email, if sendmail is configured on your machine.
+This script can send email, if sendmail is configured on your machine.
+
+The resulting file size is cut down by about half. 
+
+If you watch a recording before all this finishes, funny things happen. like.. it fails..
+
+I am using mythtv 0.28. I suspect it will work on later versions, but have not tried it. 
 
 ## Source Formats
 

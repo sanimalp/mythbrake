@@ -368,10 +368,15 @@ if [ $width -ge 1280 ]
 then
   # We have a channel with commercials, so flag & cut them out first.
   echo "Starting commercial flagging on HD TV content" >> "$logfile"
-  /usr/bin/mythcommflag -c "$chanid" -s "$starttime" --gencutlist
+  /usr/bin/mythcommflag --chanid "$chanid" --starttime "$starttime"
+  echo "starting mythutil gencutlist" >> "$logfile"
+  /usr/bin/mythutil --chanid "$chanid" --starttime "$starttime" --gencutlist
+  echo "starting honor cutlist transcode" >> "$logfile"
   /usr/bin/mythtranscode --chanid "$chanid" --starttime "$starttime" --mpeg2 --honorcutlist
+  echo "starting commflag rebuild" >> "$logfile"
   /usr/bin/mythcommflag --file "$file" --rebuild
   #Finished commercial cutting, following is encoding as above
+  echo "Finished commercial cutting, starting transcode" >> "$logfile"
   
   echo "Userjob HD-TV starts because of with of $width" >> "$logfile"
 HandBrakeCLI -q 19.0 -e x264 -r 25 -a "$audiotacks" -A "$audioname" -E "$audiocodec" -B "$audiobitrate" -6 "$audiodownmix" -f mp4 --crop 0:0:0:0 -d -m -x b-adapt=2:rc-lookahead=50:ref=3:bframes=3:me=umh:subme=8:trellis=1:merange=20:direct=auto -i "$mythrecordingsdir/$file" -o "$outfile" --optimize 2>> "$logfile"
@@ -459,12 +464,17 @@ HandBrakeCLI -q 19.0 -e x264 -r 25 -a "$audiotacks" -A "$audioname" -E "$audioco
 
     else
       # We have a channel with commercials, so flag & cut them out first.
-      echo "Userjob SD-TV mit Werbung startet" >> "$logfile"
-      /usr/bin/mythcommflag -c "$chanid" -s "$starttime" --gencutlist
+      echo "Starting commercial flagging on HD TV content" >> "$logfile"
+      /usr/bin/mythcommflag --chanid "$chanid" --starttime "$starttime"
+      echo "starting mythutil gencutlist" >> "$logfile"
+      /usr/bin/mythutil --chanid "$chanid" --starttime "$starttime" --gencutlist
+      echo "starting honor cutlist transcode" >> "$logfile"
       /usr/bin/mythtranscode --chanid "$chanid" --starttime "$starttime" --mpeg2 --honorcutlist
+      echo "starting commflag rebuild" >> "$logfile"
       /usr/bin/mythcommflag --file "$file" --rebuild
       #Finished commercial cutting, following is encoding as above
-
+      echo "Finished commercial cutting, starting transcode" >> "$logfile"
+      
       #SD-TV Userjob is encoding to MPEG4 ASP aka DivX aka Xvid via FFMPEG via HandBrakeCLI
       # $SDCCMDLINE is the commandline for SDtv-Commercials
       SDCCMDLINE='/usr/bin/HandBrakeCLI -q 3 -r 25 -a $audiotacks -A $audioname -E $audiocodec -B $audiobitrate -6 $audiodownmix -f mp4 --crop 0:0:0:0 -d -m -i "$mythrecordingsdir/$file" -o "$outfile" --optimize 2>> "$logfile"' 
